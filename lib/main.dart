@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import './components/notification.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,12 +25,15 @@ class EventGenerator extends StatefulWidget {
 }
 
 class EventGeneratorState extends State<EventGenerator> {
+  final contentController = TextEditingController();
+  final _notificationWidget = NotificationWidget();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: _buildeNavigator(),
-        title: Text("新建事件"),
+        title: Text("新建事件s"),
         centerTitle: true,
         actions: <Widget>[
           new IconButton(icon: const Icon(Icons.list), onPressed: (){},)
@@ -40,6 +42,25 @@ class EventGeneratorState extends State<EventGenerator> {
       body: _buildBody(),
       bottomNavigationBar: BottomNavigatorState(),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    contentController.addListener(_onDataChange);
+  }
+
+  @override
+  void dispose() {
+    contentController.dispose();
+    super.dispose();
+  }
+
+  void _onDataChange(){
+    _notificationWidget.channelId = "dd";
+    _notificationWidget.channelName = "标题1";
+    _notificationWidget.description = contentController.text;
   }
 
   //构建AppBar
@@ -58,6 +79,7 @@ class EventGeneratorState extends State<EventGenerator> {
       children: <Widget>[
         _header(),
         _form(),
+        _notificationWidget,
       ],
     );
   }
@@ -66,21 +88,29 @@ class EventGeneratorState extends State<EventGenerator> {
   Widget _header(){
     //v1:静态文字
     //v2:今日事件，点击跳转编辑
-    return Text(
-     "共有n项提醒",
-     textAlign: TextAlign.center,
+    return Container(
+      padding: const EdgeInsets.only(top: 30.0),
+      child: Text(
+        "共有n项提醒",
+        textAlign: TextAlign.center,
+      )
     );
   }
 
   //构建输入信息输入区域及提交
   Widget _form(){
+    
     //v1:一行文字
     //v2:标题、正文、时间、事件强度
-    return InputDecorator(
-      isFocused: false,
-      decoration: InputDecoration(
-        labelText: "在此输入"
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 100.0),
+      child : TextField(
+        controller: contentController,
+        decoration: InputDecoration(
+        hintText: "在此输入提醒内容",
+        prefixText: "输入："
       ),
+    )
     );
   }
 
