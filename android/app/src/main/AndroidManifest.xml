@@ -19,7 +19,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="xs1-1"
+        android:label="定时提醒"
         android:icon="@mipmap/xs1">
         <activity
             android:name=".MainActivity"

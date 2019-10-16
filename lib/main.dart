@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import './components/notification.dart';
 
 void main() => runApp(MyApp());
@@ -33,7 +34,7 @@ class EventGeneratorState extends State<EventGenerator> {
     return Scaffold(
       appBar: AppBar(
         leading: _buildeNavigator(),
-        title: Text("新建事件s"),
+        title: Text("新建事件"),
         centerTitle: true,
         actions: <Widget>[
           new IconButton(icon: const Icon(Icons.list), onPressed: (){},)
@@ -58,9 +59,10 @@ class EventGeneratorState extends State<EventGenerator> {
   }
 
   void _onDataChange(){
-    _notificationWidget.channelId = "dd";
-    _notificationWidget.channelName = "标题1";
-    _notificationWidget.description = contentController.text;
+    _notificationWidget.channelId = "channel-" + DateTime.now().toString(); //确保channelId唯一
+    _notificationWidget.title = "提醒"; //后期可设置通知大类
+    _notificationWidget.body = contentController.text;
+    _notificationWidget.time = Time(20, 45, 0);
   }
 
   //构建AppBar
